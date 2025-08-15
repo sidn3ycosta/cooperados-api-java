@@ -479,10 +479,6 @@ Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalh
 
 ---
 
-## 🚀 **Pronto para Desenvolver!**
-
-Agora você tem tudo configurado para começar a desenvolver na Cooperados API.
-
 **🎯 Setup recomendado para localhost:**
 1. Execute `make postgres` para iniciar PostgreSQL
 2. Execute `mvn spring-boot:run -Dspring-boot.run.profiles=dev` para a aplicação
