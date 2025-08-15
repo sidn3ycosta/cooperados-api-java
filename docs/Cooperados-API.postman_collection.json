@@ -1,0 +1,626 @@
+{
+	"info": {
+		"_postman_id": "cooperados-api-collection",
+		"name": "Cooperados API - Teste Técnico",
+		"description": "Collection completa para testar a API de Cooperados durante entrevista técnica. Inclui todos os endpoints com exemplos de dados válidos.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "cooperados-api"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actuator/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						},
+						"description": "Verifica se a aplicação está funcionando corretamente"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para verificar o status da aplicação"
+		},
+		{
+			"name": "Cooperados - CRUD",
+			"item": [
+				{
+					"name": "Listar Todos os Cooperados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados?page=0&size=10&sort=nome&direction=asc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0",
+									"description": "Número da página (começa em 0)"
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"description": "Quantidade de itens por página"
+								},
+								{
+									"key": "sort",
+									"value": "nome",
+									"description": "Campo para ordenação"
+								},
+								{
+									"key": "direction",
+									"value": "asc",
+									"description": "Direção da ordenação (asc/desc)"
+								}
+							]
+						},
+						"description": "Lista todos os cooperados com paginação e ordenação"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Cooperado por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados",
+								"1"
+							]
+						},
+						"description": "Busca um cooperado específico por ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Cooperado (Pessoa Física)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"João Silva Santos\",\n  \"documento\": \"12345678901\",\n  \"dataNascimentoConstituicao\": \"1990-05-15\",\n  \"rendaFaturamento\": 5000.00,\n  \"telefone\": \"11987654321\",\n  \"email\": \"joao.silva@email.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados"
+							]
+						},
+						"description": "Cria um novo cooperado pessoa física (CPF válido: 12345678901)"
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Cooperado (Pessoa Jurídica)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Empresa ABC Ltda\",\n  \"documento\": \"11222333000181\",\n  \"dataNascimentoConstituicao\": \"2020-01-15\",\n  \"rendaFaturamento\": 150000.00,\n  \"telefone\": \"1133334444\",\n  \"email\": \"contato@empresaabc.com.br\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados"
+							]
+						},
+						"description": "Cria um novo cooperado pessoa jurídica (CNPJ válido: 11222333000181)"
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Cooperado",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"João Silva Santos Atualizado\",\n  \"dataNascimentoConstituicao\": \"1990-05-15\",\n  \"rendaFaturamento\": 6000.00,\n  \"telefone\": \"11987654321\",\n  \"email\": \"joao.silva.atualizado@email.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados",
+								"1"
+							]
+						},
+						"description": "Atualiza um cooperado existente (substitui o ID 1 pelo ID real)"
+					},
+					"response": []
+				},
+				{
+					"name": "Remover Cooperado (Soft Delete)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados",
+								"1"
+							]
+						},
+						"description": "Remove um cooperado (soft delete - não apaga do banco)"
+					},
+					"response": []
+				},
+				{
+					"name": "Reativar Cooperado",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados/1/reativar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados",
+								"1",
+								"reativar"
+							]
+						},
+						"description": "Reativa um cooperado que foi removido (soft delete)"
+					},
+					"response": []
+				}
+			],
+			"description": "Operações básicas de CRUD para cooperados"
+		},
+		{
+			"name": "Consultas Específicas",
+			"item": [
+				{
+					"name": "Buscar por CPF",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados/documento/12345678901",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados",
+								"documento",
+								"12345678901"
+							]
+						},
+						"description": "Busca cooperado por CPF específico"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar por CNPJ",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados/documento/11222333000181",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados",
+								"documento",
+								"11222333000181"
+							]
+						},
+						"description": "Busca cooperado por CNPJ específico"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar por Tipo (CPF)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados/tipo/CPF",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados",
+								"tipo",
+								"CPF"
+							]
+						},
+						"description": "Lista todos os cooperados pessoa física"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar por Tipo (CNPJ)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados/tipo/CNPJ",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados",
+								"tipo",
+								"CNPJ"
+							]
+						},
+						"description": "Lista todos os cooperados pessoa jurídica"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Apenas Ativos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados/ativos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados",
+								"ativos"
+							]
+						},
+						"description": "Lista apenas cooperados ativos (não removidos)"
+					},
+					"response": []
+				}
+			],
+			"description": "Consultas específicas e filtros"
+		},
+		{
+			"name": "Informações e Estatísticas",
+			"item": [
+				{
+					"name": "Verificar Existência por Documento",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados/existe/12345678901",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados",
+								"existe",
+								"12345678901"
+							]
+						},
+						"description": "Verifica se existe cooperado com o documento especificado"
+					},
+					"response": []
+				},
+				{
+					"name": "Contar por Tipo (CPF)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados/contar/tipo/CPF",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados",
+								"contar",
+								"tipo",
+								"CPF"
+							]
+						},
+						"description": "Conta quantos cooperados pessoa física existem"
+					},
+					"response": []
+				},
+				{
+					"name": "Contar por Tipo (CNPJ)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados/contar/tipo/CNPJ",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados",
+								"contar",
+								"tipo",
+								"CNPJ"
+							]
+						},
+						"description": "Conta quantos cooperados pessoa jurídica existem"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para obter informações e estatísticas"
+		},
+		{
+			"name": "Testes de Validação",
+			"item": [
+				{
+					"name": "Criar com CPF Inválido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Teste CPF Inválido\",\n  \"documento\": \"12345678900\",\n  \"dataNascimentoConstituicao\": \"1990-05-15\",\n  \"rendaFaturamento\": 5000.00,\n  \"telefone\": \"11987654321\",\n  \"email\": \"teste@email.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados"
+							]
+						},
+						"description": "Testa validação de CPF inválido (deve retornar erro)"
+					},
+					"response": []
+				},
+				{
+					"name": "Criar com CNPJ Inválido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Teste CNPJ Inválido\",\n  \"documento\": \"11222333000180\",\n  \"dataNascimentoConstituicao\": \"2020-01-15\",\n  \"rendaFaturamento\": 150000.00,\n  \"telefone\": \"1133334444\",\n  \"email\": \"teste@empresa.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados"
+							]
+						},
+						"description": "Testa validação de CNPJ inválido (deve retornar erro)"
+					},
+					"response": []
+				},
+				{
+					"name": "Criar com Email Inválido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Teste Email Inválido\",\n  \"documento\": \"12345678901\",\n  \"dataNascimentoConstituicao\": \"1990-05-15\",\n  \"rendaFaturamento\": 5000.00,\n  \"telefone\": \"11987654321\",\n  \"email\": \"email-invalido\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados"
+							]
+						},
+						"description": "Testa validação de email inválido (deve retornar erro)"
+					},
+					"response": []
+				},
+				{
+					"name": "Criar com Telefone Inválido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Teste Telefone Inválido\",\n  \"documento\": \"12345678901\",\n  \"dataNascimentoConstituicao\": \"1990-05-15\",\n  \"rendaFaturamento\": 5000.00,\n  \"telefone\": \"123\",\n  \"email\": \"teste@email.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/cooperados",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cooperados"
+							]
+						},
+						"description": "Testa validação de telefone inválido (deve retornar erro)"
+					},
+					"response": []
+				}
+			],
+			"description": "Testes para validar as regras de negócio e validações"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Log da requisição para debug",
+					"console.log('Executando: ' + pm.request.name);",
+					"console.log('URL: ' + pm.request.url.toString());"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Testes automáticos básicos",
+					"pm.test('Status code is 200 or 201 or 400 or 404', function () {",
+					"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 400, 404]);",
+					"});",
+					"",
+					"pm.test('Response time is less than 2000ms', function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+					"});",
+					"",
+					"pm.test('Response has content', function () {",
+					"    pm.expect(pm.response.text()).to.not.be.empty;",
+					"});",
+					"",
+					"// Log da resposta para debug",
+					"console.log('Response: ' + pm.response.text());"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8081",
+			"type": "string",
+			"description": "URL base da API (localhost para desenvolvimento)"
+		}
+	]
+}

@@ -1,0 +1,104 @@
+version: '3.8'
+
+services:
+  # Banco de dados PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: cooperados-postgres
+    environment:
+      POSTGRES_DB: cooperados_db
+      POSTGRES_USER: cooperados_user
+      POSTGRES_PASSWORD: cooperados_pass
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./src/main/resources/db/migration:/docker-entrypoint-initdb.d
+    networks:
+      - cooperados-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cooperados_user -d cooperados_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # Aplicação Cooperados API
+  cooperados-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cooperados-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/cooperados_db
+      SPRING_DATASOURCE_USERNAME: cooperados_user
+      SPRING_DATASOURCE_PASSWORD: cooperados_pass
+      JAVA_OPTS: "-Xmx512m -Xms256m"
+    ports:
+      - "8080:8080"
+    networks:
+      - cooperados-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+  # Aplicação para desenvolvimento (opcional)
+  cooperados-api-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: cooperados-api-dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/cooperados_db_dev
+      SPRING_DATASOURCE_USERNAME: cooperados_user_dev
+      SPRING_DATASOURCE_PASSWORD: cooperados_pass_dev
+      JAVA_OPTS: "-Xmx1g -Xms512m"
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./src:/app/src
+      - ~/.m2:/root/.m2
+    networks:
+      - cooperados-network
+    profiles:
+      - dev
+    restart: unless-stopped
+
+  # pgAdmin para gerenciamento do banco (opcional)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: cooperados-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@cooperados.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - cooperados-network
+    profiles:
+      - dev
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  cooperados-network:
+    driver: bridge

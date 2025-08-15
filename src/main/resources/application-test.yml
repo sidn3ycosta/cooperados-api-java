@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:15://localhost/cooperados_test
+    username: test_user
+    password: test_pass
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+  
+  flyway:
+    enabled: false
+
+logging:
+  level:
+    com.cooperados: INFO
+    org.springframework.web: WARN
+    org.hibernate.SQL: WARN

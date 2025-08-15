@@ -1,0 +1,28 @@
+# Configurações locais para desenvolvimento
+# Este arquivo é opcional e pode ser usado para sobrescrever configurações do docker-compose.yml
+
+version: '3.8'
+
+services:
+  # Override para desenvolvimento local
+  cooperados-api:
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - JAVA_OPTS=-Xmx1g -Xms512m
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+
+  postgres:
+    environment:
+      - POSTGRES_DB=cooperados_db_dev
+      - POSTGRES_USER=cooperados_user_dev
+      - POSTGRES_PASSWORD=cooperados_pass_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+
+volumes:
+  postgres_data_dev:
+    driver: local
